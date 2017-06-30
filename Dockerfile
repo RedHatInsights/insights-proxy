@@ -11,7 +11,6 @@ COPY cert.pem /etc/nginx/ssl/
 COPY key.pem /etc/nginx/ssl/
 COPY insights-proxy.conf /etc/nginx/insights-proxy.conf
 COPY insights-proxy-nocontent.conf /etc/nginx/insights-proxy-nocontent.conf
-RUN cat /etc/nginx/nginx.conf
 
 # USER nginx
 USER 100
