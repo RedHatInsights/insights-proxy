@@ -13,7 +13,6 @@ server {
     location /browser-sync { proxy_pass http://localhost:9000/browser-sync; }
 
     location / {
-        # resolver 10.11.5.19;
         proxy_pass https://UPSTREAM_OR_IP;
         sub_filter "https://UPSTREAM" "https://DOWNSTREAM:1337";
         sub_filter_once off;
