@@ -6,10 +6,10 @@
         ssl_certificate_key /etc/nginx/ssl/key.pem;
 
         # content location /insightsbeta/static { proxy_pass https://UPSTREAM/insightsbeta/static; }
-        # content location /insights/static { proxy_pass https://UPSTREAM/insights/static; }
+        # content location /insights/static     { proxy_pass https://UPSTREAM/insights/static; }
 
         location /insightsbeta { proxy_pass http://localhost:9000/insightsbeta; }
-        location /insights { proxy_pass http://localhost:9000/insights; }
+        location /insights     { proxy_pass http://localhost:9000/insights; }
         location /browser-sync { proxy_pass http://localhost:9000/browser-sync; }
 
         location / {

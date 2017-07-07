@@ -31,6 +31,7 @@ function hackup () {
         sed "s|DOWNSTREAM|$1.foo.redhat.com|" |
         ( [[ "$1" != "prod" ]] && sed "s|UPSTREAM_OR_IP|$ip|" || cat ) |
         ( [[ $NO_CONTENT ]] && sed "s|# content ||" || cat ) |
+        ( [[ $NEW_BS ]] && sed "s|http://localhost:9000|https://localhost:9000|" || cat ) |
         sed "s|UPSTREAM_OR_IP|$2|" |
         sed "s|UPSTREAM|$2|" >> /tmp/nginx.conf
 }
