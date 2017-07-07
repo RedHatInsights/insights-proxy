@@ -32,7 +32,7 @@ $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 - NEW_BS=true            proxies to the backend at https://localhost:9000 (this will become the default once https://github.com/RedHatInsights/insights-frontend/pull/162 is merged)
 
 
-### MODE options
+### MODE
 
 - MODE=prod/nocontent (default) serve up with prod assets and backend with the Akamai passthrough for /static
 - MODE=prod/content   serve up with prod assets and backend with local /static
