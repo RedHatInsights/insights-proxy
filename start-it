@@ -1,0 +1,44 @@
+#!/bin/sh
+
+
+case $MODE in
+    "prod/content")
+        PROD_ONLY=true
+        echo "Using conf $1"
+     ;;
+    "all/content")
+        PROD_ONLY=false
+        echo "Using conf $1"
+    ;;
+    "all/nocontent")
+        PROD_ONLY=false
+        NO_CONTENT=true
+        echo "Using conf $1"
+    ;;
+    *)
+        echo "Using default conf prod/noconent"
+        NO_CONTENT=true
+    ;;
+esac
+
+function hackup () {
+    cat server.nginx.tpl |
+        sed "s|DOWNSTREAM|$1.foo.redhat.com|" |
+        ( [[ $NO_CONTENT ]] && sed "s|# content ||" || cat ) |
+        sed "s|UPSTREAM|https://$2|" >> /tmp/nginx.conf
+}
+
+cat base.nginx.tpl > /tmp/nginx.conf
+hackup prod access.redhat.com
+if ! $PROD_ONLY
+then
+    hackup qa accessqa.usersys.redhat.com
+    hackup ci accessci.usersys.redhat.com
+fi
+echo "}" >> /tmp/nginx.conf
+
+echo -e "\n\n#####################"
+cat /tmp/nginx.conf
+
+nginx -c /tmp/nginx.conf -g "daemon off;"
+

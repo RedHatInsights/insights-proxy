@@ -13,14 +13,14 @@ $ sudo echo -e "\n127.0.0.1 prod.foo.redhat.com" > /etc/hosts
 
 ### To run with local /static content (developer mode)
 ```
-$ docker run --net='host' -e CONF='insights-proxy.conf' -p1337:1337 -ti iphands/insightsproxy
+$ docker run --net='host' -e MODE=all/content -p1337:1337 -ti iphands/insightsproxy
 $ sudo docker run -p9000:8080 iphands/insightsfrontend:latest
 $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 ```
 
 ### To run without local /static content (demo mode)
 ```
-$ docker run --net='host' -e CONF='insights-proxy-nocontent.conf' -p1337:1337 -ti iphands/insightsproxy
+$ docker run --net='host' -e MODE=prod/nocontent -p1337:1337 -ti iphands/insightsproxy
 $ sudo docker run -p9000:8080 iphands/insightsfrontend:latest
 $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 ```
