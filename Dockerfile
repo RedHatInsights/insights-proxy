@@ -9,14 +9,11 @@ STOPSIGNAL SIGTERM
 RUN  mkdir /etc/nginx/ssl
 COPY cert.pem /etc/nginx/ssl/
 COPY key.pem /etc/nginx/ssl/
-COPY insights-proxy.conf /etc/nginx/insights-proxy.conf
-COPY insights-proxy-nocontent.conf /etc/nginx/insights-proxy-nocontent.conf
 COPY start-it /usr/local/bin/start-it
 
 # USER nginx
-USER 100
+# USER 100
 COPY base.nginx.tpl base.nginx.tpl
 COPY server.nginx.tpl server.nginx.tpl
 CMD [ "/bin/sh", "/usr/local/bin/start-it" ]
-# CMD nginx  -c "/etc/nginx/${CONF}" -g "daemon off;"
 
