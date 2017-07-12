@@ -28,8 +28,8 @@ $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 
 ### HTTPS
 
-- leave it off (default) proxies to the backend at http://localhost:9000
-- HTTPS=true             proxies to the backend at https://localhost:9000 (this will become the default once https://github.com/RedHatInsights/insights-frontend/pull/162 is merged)
+- HTTPS=true  (default) proxies to the backend at https://localhost:9000
+- HTTPS=false (default) proxies to the backend at http://localhost:9000 (this is for the older frontend code)
 
 
 ### MODE

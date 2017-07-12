@@ -21,6 +21,19 @@ case $MODE in
     ;;
 esac
 
+function is_https() {
+    [[ -z $HTTPS ]] && return 0
+    [[ $HTTPS ]]  && [[ $HTTPS == 'true' ]] && return 0
+    return 1
+}
+
+if is_https
+then
+    echo "Using HTTPS=true mode"
+else
+    echo "Using HTTPS=false mode"
+fi
+
 function hackup () {
     if [ "$1" != prod ]
     then
@@ -31,7 +44,7 @@ function hackup () {
         sed "s|DOWNSTREAM|$1.foo.redhat.com|" |
         ( [[ "$1" != "prod" ]] && sed "s|UPSTREAM_OR_IP|$ip|" || cat ) |
         ( [[ $NO_CONTENT ]] && sed "s|# content ||" || cat ) |
-        ( [[ $HTTPS ]] && sed "s|http://localhost:9000|https://localhost:9000|" || cat ) |
+        ( is_https && sed "s|http://localhost:9000|https://localhost:9000|" || cat ) |
         sed "s|UPSTREAM_OR_IP|$2|" |
         sed "s|UPSTREAM|$2|" >> /tmp/nginx.conf
 }
@@ -46,7 +59,7 @@ then
 fi
 echo "}" >> /tmp/nginx.conf
 
-echo -e "\n\n#####################"
+echo -e "\n\nHere is the nginx config for this run:"
 cat /tmp/nginx.conf
 
 nginx -c /tmp/nginx.conf -g "daemon off;"
