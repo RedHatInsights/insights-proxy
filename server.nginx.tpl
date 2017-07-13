@@ -8,9 +8,9 @@
         # content location /insightsbeta/static { proxy_pass https://UPSTREAM/insightsbeta/static; }
         # content location /insights/static     { proxy_pass https://UPSTREAM/insights/static; }
 
-        location /insightsbeta { proxy_pass http://localhost:9000/insightsbeta; }
-        location /insights     { proxy_pass http://localhost:9000/insights; }
-        location /browser-sync { proxy_pass http://localhost:9000/browser-sync; }
+        location /insightsbeta { proxy_pass TARGET_PROTOCOL://TARGET_HOST:TARGET_PORT/insightsbeta; }
+        location /insights     { proxy_pass TARGET_PROTOCOL://TARGET_HOST:TARGET_PORT/insights; }
+        location /browser-sync { proxy_pass TARGET_PROTOCOL://TARGET_HOST:TARGET_PORT/browser-sync; }
 
         location / {
             proxy_pass https://UPSTREAM_OR_IP;

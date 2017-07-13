@@ -26,6 +26,12 @@ $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 
 ## Avalible options
 
+### TARGET_PORT
+- TARGET_PORT (default: 9000) set the port to proxy to
+
+### TARGET_HOST
+- TARGET_HOST (default: localhost) set the host to proxy to
+
 ### HTTPS
 
 - HTTPS=true  (default) proxies to the backend at https://localhost:9000
