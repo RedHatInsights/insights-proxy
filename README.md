@@ -35,7 +35,7 @@ $ firefox https://prod.foo.redhat.com:1337/insightsbeta/
 ### HTTPS
 
 - HTTPS=true  (default) proxies to the backend at https://localhost:9000
-- HTTPS=false (default) proxies to the backend at http://localhost:9000 (this is for the older frontend code)
+- HTTPS=false proxies to the backend at http://localhost:9000 (this is for the older frontend code)
 
 
 ### MODE
