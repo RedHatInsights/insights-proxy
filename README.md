@@ -1,5 +1,10 @@
 # insights-proxy
+
 Proxy for the insightsfrontend container
+
+This container uses https://github.com/redhataccess/spandx which provides ESI and some nifty routing tools.
+
+Checkout the `spandx` docs for additional config options.
 
 ## Setup
 ### Setup the initial /etc/hosts entries
