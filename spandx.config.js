@@ -2,6 +2,7 @@
 
 const tryRequire = require('try-require');
 const lodash = require('lodash');
+const localhost = (process.platform === 'linux') ? 'localhost' : 'host.docker.internal';
 
 const defaults = {
     bs: {
@@ -15,12 +16,20 @@ const defaults = {
     open: false,
     startPath: '/',
     verbose: true,
-
-    routes: {
-        '/r/insights': { host: 'https://access.redhat.com' },
-        '/': { host: 'https://localhost:9000' }
-    }
+    routes: {}
 };
+
+if (process.env.LOCAL_API === 'true') {
+    defaults.routes['/r/insights'] = { host: `https://${localhost}:9001` };
+}
+
+if (process.env.LOCAL_CHROME === 'true') {
+    defaults.routes['/insights/chrome'] = '/chrome/';
+    defaults.routes['/insightsbeta/chrome'] = '/chrome/';
+}
+
+defaults.routes['/insights'] = { host: `https://${localhost}:9000` };
+defaults.routes['/'] = { host: 'https://access.redhat.com' };
 
 const custom = tryRequire('/config/spandx.config') || {};
 const ret = lodash.defaultsDeep(custom, defaults);
