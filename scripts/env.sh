@@ -1,4 +1,4 @@
-CONTAINER_URL=docker.io/iphands/insightsproxy
+CONTAINER_URL=docker.io/redhatinsights/insights-proxy
 case "`uname -s`" in
     Linux*)
         LINUX=true
