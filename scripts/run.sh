@@ -3,7 +3,7 @@ source "${BASH_SOURCE%/*}/env.sh"
 
 if $LOCAL_CHROME
 then
-    MYOPTS="$MYOPTS -e LOCAL_CHROME -v \"$PWD:/chrome\""
+    MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
 fi
 
 if ! $DARWIN
