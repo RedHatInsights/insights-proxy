@@ -8,9 +8,9 @@ Checkout the `spandx` docs for additional config options.
 
 ## Setup
 
-### Setup the initial /etc/hosts entries
+### Setup the initial /etc/hosts entries (do this once)
 ```
-$ sudo echo -e "\n127.0.0.1 prod.foo.redhat.com stage.foo.redhat.com qa.foo.redhat.com ci.foo.redhat.com" > /etc/hosts
+$ sudo bash scripts/patch-etc-hosts.sh
 ```
 
 ### Pull/Update the proxy container
