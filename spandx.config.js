@@ -2,7 +2,7 @@
 
 const tryRequire = require('try-require');
 const lodash = require('lodash');
-const localhost = (process.platform === 'linux') ? 'localhost' : 'host.docker.internal';
+const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 
 const defaults = {
     bs: {
