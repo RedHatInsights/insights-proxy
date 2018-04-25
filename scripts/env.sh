@@ -1,4 +1,4 @@
-CONTAINER_URL=docker.io/iphands/insightsproxy:spandx
+CONTAINER_URL=docker.io/iphands/insightsproxy
 case "`uname -s`" in
     Linux*)
         LINUX=true
