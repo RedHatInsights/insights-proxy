@@ -6,9 +6,9 @@ then
     MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
 fi
 
-if ! $DARWIN
+if [ "$PLATFORM" == "linux" ]
 then
     MYOPTS="$MYOPTS --net=host"
 fi
 
-docker run $MYOPTS -e PLATFORM -e LOCAL_API --rm -ti --name insightsproxy -p 1337:1337 $CONTAINER_URL
+docker run $MYOPTS -e PLATFORM -e PORT -e LOCAL_API --rm -ti --name insightsproxy -p 1337:1337 $CONTAINER_URL
