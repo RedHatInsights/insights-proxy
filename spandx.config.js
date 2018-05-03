@@ -4,7 +4,7 @@ const tryRequire = require('try-require');
 const lodash = require('lodash');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
-const port = process.env.port || 9000;
+const port = process.env.PORT || 9000;
 
 const defaults = {
     bs: {
