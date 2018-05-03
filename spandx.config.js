@@ -3,6 +3,8 @@
 const tryRequire = require('try-require');
 const lodash = require('lodash');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
+const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
+const port = process.env.port || 9000;
 
 const defaults = {
     bs: {
@@ -28,7 +30,7 @@ if (process.env.LOCAL_CHROME === 'true') {
     defaults.routes['/insightsbeta/chrome'] = '/chrome/';
 }
 
-defaults.routes['/insights'] = { host: `https://${localhost}:9000` };
+defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };
 defaults.routes['/'] = { host: 'https://access.redhat.com' };
 
 const custom = tryRequire('/config/spandx.config') || {};
