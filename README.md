@@ -44,3 +44,8 @@ $ mkdir -p ./config && touch ./config/spandx.config.js && $EDITOR ./config/spand
 $ docker run -v $PWD/config:/config --rm --net='host' -p1337:1337 -ti docker.io/iphands/insightsproxy
 ```
 
+Note to macOS and Windows users using [Docker Machine](https://docs.docker.com/machine/): You have to set-up forwarding of the port 1337 through the VirtualBox network interface. The machine has to be stopped for this command to succeed.
+
+```
+VBoxManage modifyvm "default" --natpf1 "insights,tcp,,1337,,1337"
+```
