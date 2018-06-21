@@ -41,7 +41,7 @@ $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
 ### Run the container with a custom spandx config
 ```
 $ mkdir -p ./config && touch ./config/spandx.config.js && $EDITOR ./config/spandx.config.js
-$ docker run -v $PWD/config:/config --rm --net='host' -p1337:1337 -ti docker.io/iphands/insightsproxy
+$ docker run -v $PWD/config:/config --rm --net='host' -p1337:1337 -ti docker.io/redhatinsights/insights-proxy
 ```
 
 Note to macOS and Windows users using [Docker Machine](https://docs.docker.com/machine/): You have to set-up forwarding of the port 1337 through the VirtualBox network interface. The machine has to be stopped for this command to succeed.
