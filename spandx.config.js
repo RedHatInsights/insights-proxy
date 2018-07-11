@@ -4,7 +4,7 @@ const tryRequire = require('try-require');
 const lodash = require('lodash');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
-const port = process.env.PORT || 9000;
+const port = process.env.PORT || 8002;
 
 const defaults = {
     bs: {
@@ -12,6 +12,11 @@ const defaults = {
             key:  '/ssl/key.pem',
             cert: '/ssl/cert.pem'
         }
+    },
+    esi: {
+        allowedHosts: [
+                /^https:\/\/access.*.redhat.com$/
+        ]
     },
     host: process.env.SPANDX_HOST || 'prod.foo.redhat.com',
     port: 1337,
@@ -26,8 +31,11 @@ if (process.env.LOCAL_API === 'true') {
 }
 
 if (process.env.LOCAL_CHROME === 'true') {
-    defaults.routes['/insights/chrome'] = '/chrome/';
-    defaults.routes['/insightsbeta/chrome'] = '/chrome/';
+    defaults.routes['/insights/static/chrome']     = '/chrome/';
+    defaults.routes['/insightsbeta/static/chrome'] = '/chrome/';
+} else {
+    defaults.routes['/insights/static/chrome']     = { host: 'https://access.redhat.com' };
+    defaults.routes['/insightsbeta/static/chrome'] = { host: 'https://access.redhat.com' };
 }
 
 defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };

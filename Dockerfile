@@ -4,9 +4,7 @@ RUN npm install lodash try-require
 
 COPY ./ssl /ssl
 
-RUN apk add --no-cache git && \
-    npm install -g spandx && \
-    apk del git
+RUN npm install -g spandx
 
 COPY ./spandx.config.js ./spandx.config.js
 
