@@ -19,7 +19,7 @@ const defaults = {
         ]
     },
     host: process.env.SPANDX_HOST || 'prod.foo.redhat.com',
-    port: 1337,
+    port: process.env.SPANDX_PORT || 1337,
     open: false,
     startPath: '/',
     verbose: true,
