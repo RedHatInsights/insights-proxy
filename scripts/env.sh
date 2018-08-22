@@ -1,7 +1,7 @@
 #!/bin/bash
 set -a
 
-CONTAINER_URL=docker.io/redhatinsights/insights-proxy
+CONTAINER_URL=${CONTAINER_URL:-docker.io/redhatinsights/insights-proxy}
 case "`uname -s`" in
     Linux*)
         LINUX=true
