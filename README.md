@@ -51,3 +51,7 @@ Note to macOS and Windows users using [Docker Machine](https://docs.docker.com/m
 ```
 VBoxManage modifyvm "default" --natpf1 "insights,tcp,,1337,,1337"
 ```
+
+### Docker Version
+
+The insights-proxy container utilizes several rewrite rules; including one for `host.docker.internal` which will resolve to the internal IP address used by the host. This special DNS name is stable from version *18.03* for Linux & macOS, however for previous versions the DNS name varied for macOS, see [Stack Overflow](https://stackoverflow.com/questions/31324981/how-to-access-host-port-from-docker-container/43541732#43541732). If you are using a version of Docker older than *18.03* on macOS, you will need to either upgrade your Docker version or update you spandx.config.js to map to the appropriate DNS name for your version.
