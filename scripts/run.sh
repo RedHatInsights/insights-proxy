@@ -6,6 +6,17 @@ then
     MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
 fi
 
+if [[ -v SPANDX_CONFIG ]]
+then
+    if [[ ! -f $SPANDX_CONFIG ]]
+    then
+        echo >&2 "$SPANDX_CONFIG does not point to a file!"
+        exit 1
+    fi
+
+    MYOPTS="$MYOPTS -v $SPANDX_CONFIG:/config/spandx.config.js"
+fi
+
 if [ "$PLATFORM" == "linux" ]
 then
     MYOPTS="$MYOPTS --net=host"
