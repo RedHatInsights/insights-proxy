@@ -40,8 +40,7 @@ $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
 
 ### Run the container with a custom spandx config
 ```
-$ mkdir -p ./config && touch ./config/spandx.config.js && $EDITOR ./config/spandx.config.js
-$ docker run -v $PWD/config:/config --rm --net='host' -p1337:1337 -ti docker.io/redhatinsights/insights-proxy
+$ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 
 ### Virtualbox users (just dont Vbox though...)
