@@ -38,6 +38,22 @@ $ cd ~/path/to/chrome/directory
 $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 
+#### Run against different deployments
+CI environment:
+```
+$ CI_ENV=true bash scripts/run.sh
+```
+
+QA environment:
+```
+$ QA_ENV=true bash scripts/run.sh
+```
+
+STAGE environment:
+```
+$ STAGE_ENV=true bash scripts/run.sh
+```
+
 ### Run the container with a custom spandx config
 ```
 $ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh

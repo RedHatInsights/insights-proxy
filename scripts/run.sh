@@ -1,6 +1,26 @@
 #!/bin/bash
 source "${BASH_SOURCE%/*}/env.sh"
 
+if $CI_ENV
+then
+    MYOPTS="$MYOPTS -e CI_ENV"
+fi
+
+if $QA_ENV
+then
+    MYOPTS="$MYOPTS -e QA_ENV"
+fi
+
+if $STAGE_ENV
+then
+    MYOPTS="$MYOPTS -e STAGE_ENV"
+fi
+
+if $LOCAL_CHROME
+then
+    MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
+fi
+
 if $LOCAL_CHROME
 then
     MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
