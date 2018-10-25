@@ -6,7 +6,9 @@ then
     MYOPTS="$MYOPTS -e LOCAL_CHROME -v $PWD:/chrome"
 fi
 
-if [[ -v SPANDX_CONFIG ]]
+# instead of using -v use -n to check for an empty strings
+# -v is not working well on bash 3.2 on osx
+if [[ -n "$SPANDX_CONFIG" ]]
 then
     if [[ ! -f $SPANDX_CONFIG ]]
     then
