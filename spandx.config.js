@@ -10,8 +10,9 @@ const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
 
 const keycloakPubkeys = {
-    prod: fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8'),
-    qa:   fs.readFileSync(__dirname + '/certs/keycloak.qa.cert', 'utf8')
+    prod:  fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8'),
+    stage: fs.readFileSync(__dirname + '/certs/keycloak.stage.cert', 'utf8'),
+    qa:    fs.readFileSync(__dirname + '/certs/keycloak.qa.cert', 'utf8')
 };
 
 const buildUser = input => {
@@ -44,8 +45,7 @@ const authPlugin = (req, res) => {
     if (!cookies.rh_jwt) { return noop; } // no rh_jwt short circut
 
     return new Promise (function (resolve, reject) {
-        // TODO make this work with QA and PROD
-        jwt.verify(cookies.rh_jwt, keycloakPubkeys.prod, {}, function jwtVerifyPromise(err, decoded) {
+        jwt.verify(cookies.rh_jwt, ret.keycloakCert, {}, function jwtVerifyPromise(err, decoded) {
             if (err) { console.log(err); reject(err); } // alert user on error
             const user = buildUser(decoded);
             req.headers['x-rh-identity'] = base64.encode(user);
@@ -75,6 +75,11 @@ const defaults = {
     verbose: true,
     routes: {}
 };
+
+if (defaults.host === 'prod.foo.redhat.com')  { defaults.keycloakCert = keycloakPubkeys.prod; }
+if (defaults.host === 'stage.foo.redhat.com') { defaults.keycloakCert = keycloakPubkeys.stage; }
+if (defaults.host === 'qa.foo.redhat.com')    { defaults.keycloakCert = keycloakPubkeys.qa; }
+if (defaults.host === 'ci.foo.redhat.com')    { defaults.keycloakCert = keycloakPubkeys.qa; }
 
 if (process.env.LOCAL_API === 'true') {
     defaults.routes['/r/insights'] = { host: `https://${localhost}:9001` };
