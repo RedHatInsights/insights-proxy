@@ -11,10 +11,11 @@ const port = process.env.PORT || 8002;
 
 const keycloakPubkeys = {
     prod: fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8'),
-    qa: fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8')
+    qa:   fs.readFileSync(__dirname + '/certs/keycloak.qa.cert', 'utf8')
 };
 
 const buildUser = input => {
+
     const user = {
         identity: {
             id: input.user_id,
@@ -27,9 +28,8 @@ const buildUser = input => {
             address_string: `"${input.firstName} ${input.lastName}" ${input.email}`,
             is_active: true,
             locale: input.lang,
-            is_org_admin: true,
-            is_internal: true
-            // TOOD fix is_internal and is_org_admin
+            is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
+            is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees')
         }
     };
 
