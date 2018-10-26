@@ -2,15 +2,70 @@
 
 const tryRequire = require('try-require');
 const lodash = require('lodash');
+const base64 = require('base-64');
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
+const fs = require('fs');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
 
+let pubkey = fs.readFileSync(__dirname + '/certs/prod-key.cert', 'utf8');
+
 const defaults = {
+    plugin: (req, res) => {
+
+        const noop = {then: (cb) => {cb();}};
+
+        if (!req.headers.cookie) {
+            return noop;
+        }
+
+        const cookies = cookie.parse(req.headers.cookie);
+        if (!cookies.rh_jwt) {
+            console.log('no cookie');
+            return noop;
+        }
+
+        let promise = new Promise (function (resolve, reject) {
+            jwt.verify(cookies.rh_jwt, pubkey, {}, function jwtVerifyPromise(err, decoded) {
+
+                if (err) {
+                    console.log(err);
+                    reject(err);
+                }
+
+                let user = {
+                    identity: {
+                        id: decoded.user_id,
+                        org_id: decoded.account_id,
+                        account_number: decoded.account_number,
+                        username: decoded.username,
+                        email: decoded.email,
+                        first_name: decoded.firstName,
+                        last_name: decoded.lastName,
+                        address_string: `"${decoded.firstName} ${decoded.lastName}" ${decoded.email}`,
+                        is_active: true,
+                        locale: decoded.lang,
+                        is_org_admin: true,
+                        is_internal: true
+                    }
+                };
+
+                req.headers['x-rh-identity'] = base64.encode(user);
+
+                console.log(user);
+
+                resolve(user);
+            });
+        });
+
+        return promise;
+    },
     bs: {
         https: {
-            key:  '/ssl/key.pem',
-            cert: '/ssl/cert.pem'
+            key: __dirname + '/ssl/key.pem',
+            cert: __dirname + '/ssl/cert.pem'
         }
     },
     esi: {
