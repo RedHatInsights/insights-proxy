@@ -1,0 +1,28 @@
+{
+  "private": true,
+  "name": "insights-proxy",
+  "version": "1.0.0",
+  "description": "Proxy for local Insights development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RedHatInsights/insights-proxy.git"
+  },
+  "author": "iphands@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RedHatInsights/insights-proxy/issues"
+  },
+  "homepage": "https://github.com/RedHatInsights/insights-proxy#readme",
+  "dependencies": {
+    "base-64": "^0.1.0",
+    "cookie": "^0.3.1",
+    "jsonwebtoken": "^8.3.0",
+    "lodash": "^4.17.11",
+    "spandx": "^1.0.3",
+    "try-require": "^1.2.1"
+  }
+}

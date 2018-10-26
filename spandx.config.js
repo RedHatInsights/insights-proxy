@@ -1,5 +1,4 @@
-/*global module, process, require*/
-
+/*global module, process, require, __dirname*/
 const tryRequire = require('try-require');
 const lodash = require('lodash');
 const base64 = require('base-64');
@@ -10,58 +9,54 @@ const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docke
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
 
-let pubkey = fs.readFileSync(__dirname + '/certs/prod-key.cert', 'utf8');
+const keycloakPubkeys = {
+    prod: fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8'),
+    qa: fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8')
+};
+
+const buildUser = input => {
+    const user = {
+        identity: {
+            id: input.user_id,
+            org_id: input.account_id,
+            account_number: input.account_number,
+            username: input.username,
+            email: input.email,
+            first_name: input.firstName,
+            last_name: input.lastName,
+            address_string: `"${input.firstName} ${input.lastName}" ${input.email}`,
+            is_active: true,
+            locale: input.lang,
+            is_org_admin: true,
+            is_internal: true
+            // TOOD fix is_internal and is_org_admin
+        }
+    };
+
+    return user;
+};
+
+const authPlugin = (req, res) => {
+    const noop = { then: (cb) => { cb(); } };
+
+    if (!req || !req.headers || !req.headers.cookie) { return noop; } // no cookies short circut
+    const cookies = cookie.parse(req.headers.cookie);
+    if (!cookies.rh_jwt) { return noop; } // no rh_jwt short circut
+
+    return new Promise (function (resolve, reject) {
+        // TODO make this work with QA and PROD
+        jwt.verify(cookies.rh_jwt, keycloakPubkeys.prod, {}, function jwtVerifyPromise(err, decoded) {
+            if (err) { console.log(err); reject(err); } // alert user on error
+            const user = buildUser(decoded);
+            req.headers['x-rh-identity'] = base64.encode(user);
+            resolve(user);
+        });
+    });
+};
+
 
 const defaults = {
-    plugin: (req, res) => {
-
-        const noop = {then: (cb) => {cb();}};
-
-        if (!req.headers.cookie) {
-            return noop;
-        }
-
-        const cookies = cookie.parse(req.headers.cookie);
-        if (!cookies.rh_jwt) {
-            console.log('no cookie');
-            return noop;
-        }
-
-        let promise = new Promise (function (resolve, reject) {
-            jwt.verify(cookies.rh_jwt, pubkey, {}, function jwtVerifyPromise(err, decoded) {
-
-                if (err) {
-                    console.log(err);
-                    reject(err);
-                }
-
-                let user = {
-                    identity: {
-                        id: decoded.user_id,
-                        org_id: decoded.account_id,
-                        account_number: decoded.account_number,
-                        username: decoded.username,
-                        email: decoded.email,
-                        first_name: decoded.firstName,
-                        last_name: decoded.lastName,
-                        address_string: `"${decoded.firstName} ${decoded.lastName}" ${decoded.email}`,
-                        is_active: true,
-                        locale: decoded.lang,
-                        is_org_admin: true,
-                        is_internal: true
-                    }
-                };
-
-                req.headers['x-rh-identity'] = base64.encode(user);
-
-                console.log(user);
-
-                resolve(user);
-            });
-        });
-
-        return promise;
-    },
+    plugin: authPlugin,
     bs: {
         https: {
             key: __dirname + '/ssl/key.pem',
@@ -70,7 +65,7 @@ const defaults = {
     },
     esi: {
         allowedHosts: [
-                /^https:\/\/access.*.redhat.com$/
+            /^https:\/\/access.*.redhat.com$/
         ]
     },
     host: process.env.SPANDX_HOST || 'prod.foo.redhat.com',
