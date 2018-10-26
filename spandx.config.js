@@ -104,6 +104,7 @@ console.log('### USING SPANDX CONFIG ###');
 console.log(ret);
 console.log('###########################');
 console.log('For more info see: https://github.com/redhataccess/spandx');
+console.log(`Insights proxy version: ${require('./package.json').version}`);
 console.log('\n');
 
 process.on('SIGINT', function() {
