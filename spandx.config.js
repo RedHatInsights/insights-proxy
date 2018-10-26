@@ -106,4 +106,8 @@ console.log('###########################');
 console.log('For more info see: https://github.com/redhataccess/spandx');
 console.log('\n');
 
+process.on('SIGINT', function() {
+    process.exit();
+});
+
 module.exports = ret;
