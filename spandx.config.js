@@ -9,10 +9,12 @@ const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docke
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
 
+const PORTAL_BACKEND_MARKER = 'PORTAL_BACKEND_MARKER';
+
 const keycloakPubkeys = {
-    prod:  fs.readFileSync(__dirname + '/certs/keycloak.prod.cert', 'utf8'),
+    prod:  fs.readFileSync(__dirname + '/certs/keycloak.prod.cert',  'utf8'),
     stage: fs.readFileSync(__dirname + '/certs/keycloak.stage.cert', 'utf8'),
-    qa:    fs.readFileSync(__dirname + '/certs/keycloak.qa.cert', 'utf8')
+    qa:    fs.readFileSync(__dirname + '/certs/keycloak.qa.cert',    'utf8')
 };
 
 const buildUser = input => {
@@ -37,29 +39,62 @@ const buildUser = input => {
     return user;
 };
 
-const authPlugin = (req, res) => {
-    const noop = { then: (cb) => { cb(); } };
+const envMap = {
+    ci: {
+        keycloakPubkey: keycloakPubkeys.qa,
+        target: 'https://access.ci.itop.redhat.com',
+        str: 'ci'
+    },
+    qa: {
+        keycloakPubkey: keycloakPubkeys.qa,
+        target: 'https://access.qa.itop.redhat.com',
+        str: 'qa'
+    },
+    stage: {
+        keycloakPubkey: keycloakPubkeys.stage,
+        target: 'https://access.stage.itop.redhat.com',
+        str: 'stage'
+    },
+    prod: {
+        keycloakPubkey: keycloakPubkeys.prod,
+        target: 'https://access.redhat.com',
+        str: 'prod'
+    }
+};
 
+const authPlugin = (req, res, target) => {
+    let env = envMap.prod;
+
+    switch (req.headers['x-spandx-origin']) {
+        case 'ci.foo.redhat.com':    env = envMap.ci;    break;
+        case 'qa.foo.redhat.com':    env = envMap.qa;    break;
+        case 'stage.foo.redhat.com': env = envMap.stage; break;
+    }
+
+    target = env.target;
+    console.log(`    --> mangled ${PORTAL_BACKEND_MARKER} to ${target}`);
+
+    const noop = { then: (cb) => { cb(target); } };
     if (!req || !req.headers || !req.headers.cookie) { return noop; } // no cookies short circut
+
     const cookies = cookie.parse(req.headers.cookie);
     if (!cookies.rh_jwt) { return noop; } // no rh_jwt short circut
 
     return new Promise (function (resolve, reject) {
-        jwt.verify(cookies.rh_jwt, ret.keycloakCert, {}, function jwtVerifyPromise(err, decoded) {
-            if (err) { console.log(err); reject(err); } // alert user on error
+        jwt.verify(cookies.rh_jwt, env.keycloakPubkey, {}, function jwtVerifyPromise(err, decoded) {
+            if (err) { console.log(err); reject(err); return; } // alert user on error
             const user = buildUser(decoded);
             req.headers['x-rh-identity'] = base64.encode(user);
-            resolve(user);
+            resolve(target);
         });
     });
 };
 
-
 const defaults = {
-    plugin: authPlugin,
+    routerPlugin: authPlugin,
     bs: {
         https: {
-            key: __dirname + '/ssl/key.pem',
+            key:  __dirname + '/ssl/key.pem',
             cert: __dirname + '/ssl/cert.pem'
         }
     },
@@ -68,18 +103,18 @@ const defaults = {
             /^https:\/\/access.*.redhat.com$/
         ]
     },
-    host: process.env.SPANDX_HOST || 'prod.foo.redhat.com',
+    host: {
+        'ci.foo.redhat.com':    'ci.foo.redhat.com',
+        'qa.foo.redhat.com':    'qa.foo.redhat.com',
+        'stage.foo.redhat.com': 'stage.foo.redhat.com',
+        'prod.foo.redhat.com':  'prod.foo.redhat.com'
+    },
     port: process.env.SPANDX_PORT || 1337,
     open: false,
     startPath: '/',
     verbose: true,
     routes: {}
 };
-
-if (defaults.host === 'prod.foo.redhat.com')  { defaults.keycloakCert = keycloakPubkeys.prod; }
-if (defaults.host === 'stage.foo.redhat.com') { defaults.keycloakCert = keycloakPubkeys.stage; }
-if (defaults.host === 'qa.foo.redhat.com')    { defaults.keycloakCert = keycloakPubkeys.qa; }
-if (defaults.host === 'ci.foo.redhat.com')    { defaults.keycloakCert = keycloakPubkeys.qa; }
 
 if (process.env.LOCAL_API === 'true') {
     defaults.routes['/r/insights'] = { host: `https://${localhost}:9001` };
@@ -89,12 +124,12 @@ if (process.env.LOCAL_CHROME === 'true') {
     defaults.routes['/insights/static/chrome']     = '/chrome/';
     defaults.routes['/insightsbeta/static/chrome'] = '/chrome/';
 } else {
-    defaults.routes['/insights/static/chrome']     = { host: 'https://access.redhat.com' };
-    defaults.routes['/insightsbeta/static/chrome'] = { host: 'https://access.redhat.com' };
+    defaults.routes['/insights/static/chrome']     = { host: PORTAL_BACKEND_MARKER };
+    defaults.routes['/insightsbeta/static/chrome'] = { host: PORTAL_BACKEND_MARKER };
 }
 
 defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };
-defaults.routes['/'] = { host: 'https://access.redhat.com' };
+defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
 const custom = tryRequire('/config/spandx.config') || {};
 const ret = lodash.defaultsDeep(custom, defaults);
@@ -104,7 +139,7 @@ console.log('### USING SPANDX CONFIG ###');
 console.log(ret);
 console.log('###########################');
 console.log('For more info see: https://github.com/redhataccess/spandx');
-console.log(`Insights proxy version: ${require('./package.json').version}`);
+console.log(`Insights Proxy version: ${require('./package.json').version}`);
 console.log('\n');
 
 process.on('SIGINT', function() {
