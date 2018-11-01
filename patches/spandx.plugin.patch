@@ -1,6 +1,6 @@
-diff -u a/app/config.js b/app/config.js
---- a/app/config.js	2018-10-26 11:10:49.150979950 -0400
-+++ b/app/config.js	2018-10-26 15:24:17.251557293 -0400
+diff -uwr a/app/config.js b/app/config.js
+--- a/app/config.js	2018-11-01 14:55:02.195577967 -0400
++++ b/app/config.js	2018-11-01 14:54:56.059556323 -0400
 @@ -52,6 +52,7 @@
      try {
          confObj = require(fullPath);
@@ -9,39 +9,41 @@ diff -u a/app/config.js b/app/config.js
          throw new Error(
              `Tried to open spandx config file ${c.fg.l.cyan}${filePath}${
                  c.end
-diff -u a/app/router.js b/app/router.js
---- a/app/router.js	2018-10-26 11:10:49.150979950 -0400
-+++ b/app/router.js	2018-10-31 13:12:58.333473120 -0400
-@@ -86,15 +86,26 @@
+diff -uwr a/app/router.js b/app/router.js
+--- a/app/router.js	2018-11-01 14:55:02.195577967 -0400
++++ b/app/router.js	2018-11-01 14:54:56.059556323 -0400
+@@ -86,6 +86,8 @@
              );
          }
  
--        if (target) {
--            proxy.web(req, res, { target }, e => {
--                console.error(e);
--                res.writeHead(200, { "Content-Type": "text/plain" });
 +        const doProxy = function (t) {
 +            target = t || target;
-+            if (target) {
-+                proxy.web(req, res, { target }, e => {
-+                    console.error(e);
-+                    res.writeHead(200, { "Content-Type": "text/plain" });
-+                    res.end();
-+                });
-+            } else {
-+                res.writeHead(404);
-                 res.end();
-+            }
-+        };
+         if (target) {
+             proxy.web(req, res, { target }, e => {
+                 console.error(e);
+@@ -97,4 +99,13 @@
+             res.end();
+         }
+     };
 +
 +        if (conf.hasOwnProperty('routerPlugin') && typeof conf.routerPlugin === 'function') {
 +            conf.routerPlugin(req, res, target).then((target) => {
 +                doProxy(target);
-             });
-         } else {
--            res.writeHead(404);
--            res.end();
++            });
++        } else {
 +            doProxy();
-         }
-     };
++        }
++    };
  };
+diff -uwr a/app/spandx.js b/app/spandx.js
+--- a/app/spandx.js	2018-11-01 14:55:02.195577967 -0400
++++ b/app/spandx.js	2018-11-01 14:54:56.059556323 -0400
+@@ -63,7 +63,7 @@
+                 cache: false
+             };
+ 
+-            return new ESI(_.defaultsDeep(conf.esi, esiconfDefaults));
++            return new ESI(_.defaultsDeep(esiconfDefaults, conf.esi));
+         })
+         .value();
+ 
