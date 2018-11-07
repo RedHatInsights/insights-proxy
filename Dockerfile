@@ -5,8 +5,6 @@ RUN npm install
 
 COPY ./certs /certs
 COPY ./ssl /ssl
-COPY ./patches /patches
-RUN cd /node_modules/spandx && cat /patches/spandx.plugin.patch | patch -p1
 
 COPY ./spandx.config.js /spandx.config.js
 

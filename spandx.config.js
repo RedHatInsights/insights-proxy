@@ -107,12 +107,7 @@ const defaults = {
             /^https:\/\/access.*.redhat.com$/
         ]
     },
-    host: {
-        'ci.foo.redhat.com':    'ci.foo.redhat.com',
-        'qa.foo.redhat.com':    'qa.foo.redhat.com',
-        'stage.foo.redhat.com': 'stage.foo.redhat.com',
-        'prod.foo.redhat.com':  'prod.foo.redhat.com'
-    },
+    host: '.*.foo.redhat.com',
     port: process.env.SPANDX_PORT || 1337,
     open: false,
     startPath: '/',
