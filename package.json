@@ -22,7 +22,7 @@
     "cookie": "^0.3.1",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.11",
-    "spandx": "git@github.com:redhataccess/spandx.git#a59c6ff3f96c3aeaeaa3b97f958cc976362760b4",
+    "spandx": "https://github.com/redhataccess/spandx.git#a59c6ff3f96c3aeaeaa3b97f958cc976362760b4",
     "try-require": "^1.2.1"
   }
 }

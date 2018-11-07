@@ -1,5 +1,7 @@
 FROM node:carbon-alpine
 
+RUN apk update && apk upgrade && apk add --no-cache git
+
 COPY ./package.json /package.json
 RUN npm install
 
