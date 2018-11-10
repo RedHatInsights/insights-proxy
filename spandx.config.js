@@ -88,7 +88,7 @@ const authPlugin = (req, res, target) => {
         jwt.verify(cookies.rh_jwt, env.keycloakPubkey, {}, function jwtVerifyPromise(err, decoded) {
             if (err) { resolve(target); return; } // silently miss on error
             const user = buildUser(decoded);
-            req.headers['x-rh-identity'] = base64.encode(user);
+            req.headers['x-rh-identity'] = base64.encode(JSON.stringify(user));
             resolve(target);
         });
     });
