@@ -122,7 +122,9 @@ const defaults = {
 };
 
 if (process.env.LOCAL_API === 'true') {
-    defaults.routes['/r/insights'] = { host: `https://${localhost}:9001` };
+    const scheme = process.env.LOCAL_API_SCHEME || 'https';
+    const port = parseInt(process.env.LOCAL_API_PORT) || 9001;
+    defaults.routes['/r/insights'] = { host: `${scheme}://${localhost}:${port}` };
 }
 
 if (process.env.LOCAL_CHROME === 'true') {
