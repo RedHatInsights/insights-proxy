@@ -136,7 +136,7 @@ if (process.env.LOCAL_CHROME === 'true') {
 defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };
 defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
-const CUSTOM_CONF_PATH = '/config/spandx.config';
+const CUSTOM_CONF_PATH = '/config/spandx.config.js';
 
 if (process.env.CUSTOM_CONF === 'true') {
     if (!fs.existsSync(CUSTOM_CONF_PATH)) {
