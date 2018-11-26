@@ -136,7 +136,27 @@ if (process.env.LOCAL_CHROME === 'true') {
 defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };
 defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
-const custom = tryRequire('/config/spandx.config') || {};
+const CUSTOM_CONF_PATH = '/config/spandx.config';
+
+if (process.env.CUSTOM_CONF === 'true') {
+    if (!fs.existsSync(CUSTOM_CONF_PATH)) {
+        console.log(`Error: CUSTOM_CONF is set to true but custom conf file is missing (container looks at ${CUSTOM_CONF_PATH})`);
+        process.exit(1);
+    }
+
+    try {
+        fs.readFileSync(CUSTOM_CONF_PATH, 'utf8');
+    } catch (e) {
+        console.log(`Error: CUSTOM_CONF is set to true but custom conf file is unreadable`);
+        console.log('This may be a simple permissions error or an selinux error');
+        console.log('Hint: if it is selinux try `sudo chcon -Rt svirt_sandbox_file_t` on the custom config file');
+        console.log('\n\nDetails:');
+        console.log(e);
+        process.exit(1);
+    }
+}
+
+const custom = tryRequire(CUSTOM_CONF_PATH) || {};
 const ret = lodash.defaultsDeep(custom, defaults);
 
 console.log('\n');
