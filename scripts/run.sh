@@ -10,13 +10,15 @@ fi
 # -v is not working well on bash 3.2 on osx
 if [[ -n "$SPANDX_CONFIG" ]]
 then
-    REALPATH=`realpath $SPANDX_CONFIG`
+    REALPATH=`python -c 'import os,sys;print os.path.realpath(sys.argv[1])' $SPANDX_CONFIG`
+
     if [[ ! -f $REALPATH ]]
     then
         echo >&2 "$SPANDX_CONFIG does not point to a file!"
         exit 1
     fi
 
+    MYOPTS="$MYOPTS -e CUSTOM_CONF=true"
     MYOPTS="$MYOPTS -v $REALPATH:/config/spandx.config.js"
 fi
 
