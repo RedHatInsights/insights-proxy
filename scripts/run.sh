@@ -10,13 +10,14 @@ fi
 # -v is not working well on bash 3.2 on osx
 if [[ -n "$SPANDX_CONFIG" ]]
 then
-    if [[ ! -f $SPANDX_CONFIG ]]
+    REALPATH=`realpath $SPANDX_CONFIG`
+    if [[ ! -f $REALPATH ]]
     then
         echo >&2 "$SPANDX_CONFIG does not point to a file!"
         exit 1
     fi
 
-    MYOPTS="$MYOPTS -v $SPANDX_CONFIG:/config/spandx.config.js"
+    MYOPTS="$MYOPTS -v $REALPATH:/config/spandx.config.js"
 fi
 
 if [ "$PLATFORM" == "linux" ]
