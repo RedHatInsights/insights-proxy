@@ -27,4 +27,4 @@ then
     MYOPTS="$MYOPTS --net=host"
 fi
 
-docker run $MYOPTS -e PLATFORM -e PORT -e LOCAL_API -e SPANDX_HOST -e SPANDX_PORT --rm -ti --name insightsproxy -p ${SPANDX_PORT:-1337}:${SPANDX_PORT:-1337} $CONTAINER_URL
+docker run $MYOPTS -e PLATFORM -e PORT -e LOCAL_API -e SPANDX_HOST -e SPANDX_PORT --security-opt label=disable --rm -ti --name insightsproxy -p ${SPANDX_PORT:-1337}:${SPANDX_PORT:-1337} $CONTAINER_URL
