@@ -1,10 +1,11 @@
 #!/bin/bash
 set -a
 
-RUNNER=podman
+RUNNER=docker
 if ! type $RUNNER >/dev/null 2>&1
 then
-    echo "Using docker, eww you should install podman"
+    # disabling podman... damn thing keeps not cleaning up after itself
+    # echo "Using docker, eww you should install podman"
     RUNNER=docker
 fi
 
