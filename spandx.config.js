@@ -42,17 +42,17 @@ const buildUser = input => {
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://access.ci.itop.redhat.com',
+        target: 'https://access.ci.cloud.paas.upshift.redhat.com',
         str: 'ci'
     },
     qa: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://access.qa.itop.redhat.com',
+        target: 'https://access.qa.cloud.paas.upshift.redhat.com',
         str: 'qa'
     },
     stage: {
         keycloakPubkey: keycloakPubkeys.stage,
-        target: 'https://access.stage.itop.redhat.com',
+        target: 'https://access.stage.cloud.paas.upshift.redhat.com',
         str: 'stage'
     },
     prod: {
