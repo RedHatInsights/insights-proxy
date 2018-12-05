@@ -2,7 +2,15 @@ FROM fedora:29
 
 RUN dnf update -y && \
         dnf install -y nodejs && \
-        dnf clean all
+        dnf clean all && \
+        rpm -ve `rpm -qa --queryformat='%{NAME}\n' | fgrep -e rpm -e dnf -e libsolv -e python -e unbound` && \
+        rm -rf /tmp/* && \
+        rm -rf /var/cache/* && \
+        rm -rf /var/lib/rpm/* && \
+        rm -rf /var/lib/dnf/* && \
+        rm -rf /usr/lib/python* && \
+        rm -rf /usr/lib64/python* && \
+        rm -rf /var/log/*
 
 COPY ./package.json /package.json
 RUN npm install
