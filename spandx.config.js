@@ -21,18 +21,25 @@ const buildUser = input => {
 
     const user = {
         identity: {
-            id: input.user_id,
-            org_id: input.account_id,
             account_number: input.account_number,
-            username: input.username,
-            email: input.email,
-            first_name: input.firstName,
-            last_name: input.lastName,
-            address_string: `"${input.firstName} ${input.lastName}" ${input.email}`,
-            is_active: true,
-            locale: input.lang,
-            is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
-            is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees')
+            type: 'User',
+            user: {
+                username: input.username,
+                email: input.email,
+                first_name: input.firstName,
+                last_name: input.lastName,
+                is_active: true,
+                is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
+                is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees'),
+                locale: input.lang
+
+                // id: input.user_id,
+                // address_string: `"${input.firstName} ${input.lastName}" ${input.email}`,
+            },
+
+            internal: {
+                org_id: input.account_id
+            }
         }
     };
 
