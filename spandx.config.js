@@ -72,15 +72,15 @@ const envMap = {
 const authPlugin = (req, res, target) => {
     let env = envMap.prod;
 
-    if (target === PORTAL_BACKEND_MARKER) {
-        switch (req.headers['x-spandx-origin']) {
-            case 'ci.foo.redhat.com':    env = envMap.ci;    break;
-            case 'qa.foo.redhat.com':    env = envMap.qa;    break;
-            case 'stage.foo.redhat.com': env = envMap.stage; break;
-            case 'prod.foo.redhat.com':  env = envMap.prod;  break;
-            default: env = false;
-        }
+    switch (req.headers['x-spandx-origin']) {
+        case 'ci.foo.redhat.com':    env = envMap.ci;    break;
+        case 'qa.foo.redhat.com':    env = envMap.qa;    break;
+        case 'stage.foo.redhat.com': env = envMap.stage; break;
+        case 'prod.foo.redhat.com':  env = envMap.prod;  break;
+        default: env = false;
+    }
 
+    if (target === PORTAL_BACKEND_MARKER) {
         target = env.target;
         console.log(`    --> mangled ${PORTAL_BACKEND_MARKER} to ${target}`);
     }
