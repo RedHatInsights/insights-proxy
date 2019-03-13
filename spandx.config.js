@@ -137,6 +137,8 @@ if (process.env.LOCAL_API === 'true') {
 if (process.env.LOCAL_CHROME === 'true') {
     defaults.routes['/insights/static/chrome']     = '/chrome/';
     defaults.routes['/insightsbeta/static/chrome'] = '/chrome/';
+    defaults.routes['/apps/chrome'] = '/chrome/';
+    defaults.routes['/beta/apps'] = '/chrome/';
 } else {
     defaults.routes['/insights/static/chrome']     = { host: PORTAL_BACKEND_MARKER };
     defaults.routes['/insightsbeta/static/chrome'] = { host: PORTAL_BACKEND_MARKER };
