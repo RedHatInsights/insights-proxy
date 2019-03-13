@@ -32,9 +32,6 @@ const buildUser = input => {
                 is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
                 is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees'),
                 locale: input.lang
-
-                // id: input.user_id,
-                // address_string: `"${input.firstName} ${input.lastName}" ${input.email}`,
             },
 
             internal: {
@@ -49,22 +46,22 @@ const buildUser = input => {
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://access.ci.cloud.paas.upshift.redhat.com',
+        target: 'https://ci.cloud.paas.upshift.redhat.com',
         str: 'ci'
     },
     qa: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://access.qa.cloud.paas.upshift.redhat.com',
+        target: 'https://qa.cloud.paas.upshift.redhat.com',
         str: 'qa'
     },
     stage: {
         keycloakPubkey: keycloakPubkeys.stage,
-        target: 'https://access.stage.cloud.paas.upshift.redhat.com',
+        target: 'https://stage.cloud.paas.upshift.redhat.com',
         str: 'stage'
     },
     prod: {
         keycloakPubkey: keycloakPubkeys.prod,
-        target: 'https://access.redhat.com',
+        target: 'https://cloud.redhat.com',
         str: 'prod'
     }
 };
@@ -112,7 +109,8 @@ const defaults = {
     },
     esi: {
         allowedHosts: [
-            /^https:\/\/access.*.redhat.com$/
+            /^https:\/\/access.*.redhat.com$/,
+            /^https:\/\/.*cloud.paas.upshift.redhat.com$/
         ]
     },
     host: {
@@ -131,18 +129,18 @@ const defaults = {
 if (process.env.LOCAL_API === 'true') {
     const scheme = process.env.LOCAL_API_SCHEME || 'https';
     const port = parseInt(process.env.LOCAL_API_PORT) || 9001;
-    defaults.routes['/r/insights'] = { host: `${scheme}://${localhost}:${port}` };
+    defaults.routes['/api'] = { host: `${scheme}://${localhost}:${port}` };
 }
 
 if (process.env.LOCAL_CHROME === 'true') {
-    defaults.routes['/insights/static/chrome']     = '/chrome/';
-    defaults.routes['/insightsbeta/static/chrome'] = '/chrome/';
+    defaults.routes['/apps/chrome']     = '/chrome/';
+    defaults.routes['/beta/apps/chrome'] = '/chrome/';
 } else {
-    defaults.routes['/insights/static/chrome']     = { host: PORTAL_BACKEND_MARKER };
-    defaults.routes['/insightsbeta/static/chrome'] = { host: PORTAL_BACKEND_MARKER };
+    defaults.routes['/apps/chrome']     = { host: PORTAL_BACKEND_MARKER };
+    defaults.routes['/apps/beta/chrome'] = { host: PORTAL_BACKEND_MARKER };
 }
 
-defaults.routes['/insights'] = { host: `${protocol}://${localhost}:${port}` };
+defaults.routes['/apps'] = { host: `${protocol}://${localhost}:${port}` };
 defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
 const CUSTOM_CONF_PATH = '/config/spandx.config.js';
