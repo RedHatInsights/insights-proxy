@@ -17,32 +17,6 @@ const keycloakPubkeys = {
     qa:    fs.readFileSync(__dirname + '/certs/keycloak.qa.cert',    'utf8')
 };
 
-const buildUser = input => {
-
-    const user = {
-        identity: {
-            account_number: input.account_number,
-            type: 'User',
-            user: {
-                username: input.username,
-                email: input.email,
-                first_name: input.firstName,
-                last_name: input.lastName,
-                is_active: true,
-                is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
-                is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees'),
-                locale: input.lang
-            },
-
-            internal: {
-                org_id: input.account_id
-            }
-        }
-    };
-
-    return user;
-};
-
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
@@ -91,7 +65,7 @@ const authPlugin = (req, res, target) => {
     return new Promise (function (resolve, reject) {
         jwt.verify(cookies.rh_jwt, env.keycloakPubkey, {}, function jwtVerifyPromise(err, decoded) {
             if (err) { resolve(target); return; } // silently miss on error
-            const user = buildUser(decoded);
+            const user = decoded.identity;
             const unicodeUser = new Buffer(JSON.stringify(user), "utf8");
             req.headers["x-rh-identity"] = unicodeUser.toString("base64");
             resolve(target);
