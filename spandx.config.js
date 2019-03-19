@@ -109,7 +109,6 @@ const defaults = {
     },
     esi: {
         allowedHosts: [
-            /^https:\/\/access.*.redhat.com$/,
             /^https:\/\/.*cloud.paas.upshift.redhat.com$/
         ]
     },
@@ -126,12 +125,6 @@ const defaults = {
     routes: {}
 };
 
-if (process.env.LOCAL_API === 'true') {
-    const scheme = process.env.LOCAL_API_SCHEME || 'https';
-    const port = parseInt(process.env.LOCAL_API_PORT) || 9001;
-    defaults.routes['/api'] = { host: `${scheme}://${localhost}:${port}` };
-}
-
 if (process.env.LOCAL_CHROME === 'true') {
     defaults.routes['/apps/chrome']     = '/chrome/';
     defaults.routes['/beta/apps/chrome'] = '/chrome/';
@@ -140,7 +133,6 @@ if (process.env.LOCAL_CHROME === 'true') {
     defaults.routes['/apps/beta/chrome'] = { host: PORTAL_BACKEND_MARKER };
 }
 
-defaults.routes['/apps'] = { host: `${protocol}://${localhost}:${port}` };
 defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
 const CUSTOM_CONF_PATH = '/config/spandx.config.js';
