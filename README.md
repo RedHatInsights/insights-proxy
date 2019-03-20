@@ -18,30 +18,30 @@ $ sudo bash scripts/patch-etc-hosts.sh
 $ bash scripts/update.sh
 ```
 
-## Running the proxy
+## Running the proxy (for users)
 
 ### Run the container with default options
 ```
 $ bash scripts/run.sh
 ```
 
-### Options for run.sh
+## Options for run.sh
 
-#### Run with the local Legacy Insighs API
+### Run the container with spandx config overrides
 ```
-$ LOCAL_API=true bash scripts/run.sh
+$ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 
-#### Run with local Insights Chrome
+### Run with local Insights Chrome (for chrome developers only)
+This is for Chrome developers only.
+If you are developing an application on the platform you need not do this!
+
 ```
 $ cd ~/path/to/chrome/directory
 $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 
-### Run the container with a custom spandx config
-```
-$ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh
-```
+## Additional Notes
 
 ### Virtualbox users (just dont Vbox though...)
 
