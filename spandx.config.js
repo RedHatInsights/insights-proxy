@@ -121,7 +121,7 @@ const defaults = {
     port: process.env.SPANDX_PORT || 1337,
     open: false,
     startPath: '/',
-    verbose: true,
+    verbose: false,
     routes: {}
 };
 
@@ -158,13 +158,14 @@ if (process.env.CUSTOM_CONF === 'true') {
 const custom = tryRequire(CUSTOM_CONF_PATH) || {};
 const ret = lodash.defaultsDeep(custom, defaults);
 
-console.log('\n');
-console.log('### USING SPANDX CONFIG ###');
+console.log('#################################');
+console.log(`# Insights Proxy version: ${require('./package.json').version} #`);
+console.log('#################################');
+
+console.log('\nUsing this Spandx config:');
 console.log(ret);
-console.log('###########################');
-console.log('For more info see: https://github.com/redhataccess/spandx');
-console.log(`Insights Proxy version: ${require('./package.json').version}`);
-console.log('\n');
+
+console.log('\nFor more info see: https://github.com/redhataccess/spandx\n');
 
 process.on('SIGINT', function() {
     process.exit();
