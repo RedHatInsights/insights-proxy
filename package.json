@@ -1,10 +1,11 @@
 {
   "private": true,
   "name": "insights-proxy",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Proxy for local Insights development",
   "main": "index.js",
   "scripts": {
+    "start": "spandx",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
