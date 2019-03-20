@@ -18,7 +18,7 @@ $ sudo bash scripts/patch-etc-hosts.sh
 $ bash scripts/update.sh
 ```
 
-## Running the proxy
+## Running the proxy (for users)
 
 ### Run the container with default options
 ```
@@ -27,12 +27,7 @@ $ bash scripts/run.sh
 
 ### Options for run.sh
 
-#### Run with the local Legacy Insighs API
-```
-$ LOCAL_API=true bash scripts/run.sh
-```
-
-#### Run with local Insights Chrome
+#### Run with local Insights Chrome (for chrome developers only)
 ```
 $ cd ~/path/to/chrome/directory
 $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
@@ -42,6 +37,8 @@ $ LOCAL_CHROME=true bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 $ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh
 ```
+
+## Additional Notes
 
 ### Virtualbox users (just dont Vbox though...)
 
