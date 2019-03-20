@@ -5,6 +5,7 @@ const base64 = require('base-64');
 const jwt = require('jsonwebtoken');
 const cookie = require('cookie');
 const fs = require('fs');
+const url = require('url-parse');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
@@ -135,7 +136,7 @@ if (process.env.LOCAL_CHROME === 'true') {
 
 defaults.routes['/'] = { host: PORTAL_BACKEND_MARKER };
 
-const CUSTOM_CONF_PATH = '/config/spandx.config.js';
+const CUSTOM_CONF_PATH = process.env.CUSTOM_CONF_PATH || '/config/spandx.config.js';
 
 if (process.env.CUSTOM_CONF === 'true') {
     if (!fs.existsSync(CUSTOM_CONF_PATH)) {
@@ -156,6 +157,34 @@ if (process.env.CUSTOM_CONF === 'true') {
 }
 
 const custom = tryRequire(CUSTOM_CONF_PATH) || {};
+let foundHostDockerInternal = false;
+
+if (process.env.NO_LOCALHOST_REWRITE !== 'true') {
+    lodash.forOwn(custom.routes, function (route) {
+        if (route.host) {
+            const u = url(route.host);
+
+            if (u.hostname.indexOf('host.docker.internal') === 0) {
+                foundHostDockerInternal = true;
+            }
+
+            if (u.hostname.indexOf('localhost') === 0) {
+                u.set('hostname', localhost);
+                route.host = u.toString();
+            }
+        }
+    });
+
+    if (foundHostDockerInternal) {
+        console.log();
+        console.log('Warning: the usage of host.docker.internal in your overide config is deprecated');
+        console.log('The proxy container will substitute localhost -> host.docker.internal for you');
+        console.log('If you really want to use this and ignore this warning rerun with NO_LOCALHOST_REWRITE=true');
+        console.log('This will be an error in 3.2.x');
+        console.log();
+    }
+}
+
 const ret = lodash.defaultsDeep(custom, defaults);
 
 console.log('#################################');

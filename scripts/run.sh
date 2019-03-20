@@ -37,7 +37,7 @@ function conditional_add_param() {
     fi
 }
 
-for var in PLATFORM PORT LOCAL_API LOCAL_API_PORT LOCAL_API_SCHEME SPANDX_HOST SPANDX_PORT
+for var in PLATFORM PORT LOCAL_API LOCAL_API_PORT LOCAL_API_SCHEME SPANDX_HOST SPANDX_PORT NO_LOCALHOST_REWRITE
 do
     conditional_add_param $var
 done
