@@ -29,8 +29,8 @@ const buildUser = input => {
                 first_name: input.firstName,
                 last_name: input.lastName,
                 is_active: true,
-                is_org_admin: lodash.includes(input.realm_access.roles, 'admin:org:all'),
-                is_internal: lodash.includes(input.realm_access.roles,  'redhat:employees'),
+                is_org_admin: input.is_org_admin,
+                is_internal: input.is_internal,
                 locale: input.lang
             },
 
