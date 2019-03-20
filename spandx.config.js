@@ -122,7 +122,7 @@ const defaults = {
     port: process.env.SPANDX_PORT || 1337,
     open: false,
     startPath: '/',
-    verbose: false,
+    verbose: true,
     routes: {}
 };
 
