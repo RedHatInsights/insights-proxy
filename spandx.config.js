@@ -187,9 +187,9 @@ if (process.env.NO_LOCALHOST_REWRITE !== 'true') {
 
 const ret = lodash.defaultsDeep(custom, defaults);
 
-console.log('###############################');
-console.log(`# Insights Proxy version: pie #`);
-console.log('###############################');
+console.log('#################################');
+console.log(`# Insights Proxy version: ${require('./package.json').version} #`);
+console.log('#################################');
 
 console.log('\nUsing this Spandx config:');
 console.log(ret);
