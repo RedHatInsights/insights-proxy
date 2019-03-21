@@ -87,10 +87,10 @@ const authPlugin = (req, res, target) => {
     if (!req || !req.headers || !req.headers.cookie) { return noop; } // no cookies short circut
 
     const cookies = cookie.parse(req.headers.cookie);
-    if (!cookies.rh_jwt) { return noop; } // no rh_jwt short circut
+    if (!cookies.cs_jwt) { return noop; } // no rh_jwt short circut
 
     return new Promise (function (resolve, reject) {
-        jwt.verify(cookies.rh_jwt, env.keycloakPubkey, {}, function jwtVerifyPromise(err, decoded) {
+        jwt.verify(cookies.cs_jwt, env.keycloakPubkey, {}, function jwtVerifyPromise(err, decoded) {
             if (err) { resolve(target); return; } // silently miss on error
             const user = buildUser(decoded);
             const unicodeUser = new Buffer(JSON.stringify(user), "utf8");
@@ -187,9 +187,9 @@ if (process.env.NO_LOCALHOST_REWRITE !== 'true') {
 
 const ret = lodash.defaultsDeep(custom, defaults);
 
-console.log('#################################');
-console.log(`# Insights Proxy version: ${require('./package.json').version} #`);
-console.log('#################################');
+console.log('###############################');
+console.log(`# Insights Proxy version: pie #`);
+console.log('###############################');
 
 console.log('\nUsing this Spandx config:');
 console.log(ret);
