@@ -27,12 +27,12 @@ const buildUser = input => {
             user: {
                 username: input.username,
                 email: input.email,
-                first_name: input.firstName,
-                last_name: input.lastName,
+                first_name: input.first_name,
+                last_name: input.last_name,
                 is_active: true,
                 is_org_admin: input.is_org_admin,
                 is_internal: input.is_internal,
-                locale: input.lang
+                locale: input.locale
             },
 
             internal: {
