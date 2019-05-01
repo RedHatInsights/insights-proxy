@@ -38,6 +38,20 @@ const buildUser = input => {
             internal: {
                 org_id: input.account_id
             }
+        },
+        entitlements: {
+            insights: {
+                is_entitled: true
+            },
+            openshift: {
+                is_entitled: true
+            },
+            smart_management: {
+                is_entitled: true
+            },
+            hybrid_cloud: {
+                is_entitled: true
+            }
         }
     };
 
