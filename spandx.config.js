@@ -109,6 +109,7 @@ const authPlugin = (req, res, target) => {
 const defaults = {
     routerPlugin: authPlugin,
     bs: {
+        notify: false,
         https: {
             key:  __dirname + '/ssl/key.pem',
             cert: __dirname + '/ssl/cert.pem'
