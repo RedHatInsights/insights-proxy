@@ -21,6 +21,12 @@ const keycloakPubkeys = {
 const buildUser = input => {
 
     const user = {
+        entitlements: {
+            insights: { is_entitled: true },
+            smart_management: { is_entitled: true },
+            openshift: { is_entitled: true },
+            hybrid: { is_entitled: true }
+        },
         identity: {
             account_number: input.account_number,
             type: 'User',
