@@ -53,17 +53,17 @@ const buildUser = input => {
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://ci.cloud.paas.upshift.redhat.com',
+        target: 'https://ci.cloud.psi.upshift.redhat.com',
         str: 'ci'
     },
     qa: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://qa.cloud.paas.upshift.redhat.com',
+        target: 'https://qa.cloud.psi.upshift.redhat.com',
         str: 'qa'
     },
     stage: {
         keycloakPubkey: keycloakPubkeys.stage,
-        target: 'https://stage.cloud.paas.upshift.redhat.com',
+        target: 'https://stage.cloud.psi.upshift.redhat.com',
         str: 'stage'
     },
     prod: {
@@ -117,7 +117,7 @@ const defaults = {
     },
     esi: {
         allowedHosts: [
-            /^https:\/\/.*cloud.paas.upshift.redhat.com$/
+            /^https:\/\/.*cloud.psi.upshift.redhat.com$/
         ]
     },
     host: {
