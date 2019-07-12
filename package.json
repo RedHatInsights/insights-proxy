@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "insights-proxy",
-  "version": "3.1.7",
+  "version": "3.1.8",
   "description": "Proxy for local Insights development",
   "main": "index.js",
   "scripts": {
