@@ -25,7 +25,9 @@ const buildUser = input => {
             insights: { is_entitled: true },
             smart_management: { is_entitled: true },
             openshift: { is_entitled: true },
-            hybrid: { is_entitled: true }
+            hybrid: { is_entitled: true },
+            migrations: { is_entitled: true },
+            ansible: { is_entitled: true }
         },
         identity: {
             account_number: input.account_number,
