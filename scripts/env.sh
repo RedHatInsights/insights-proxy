@@ -1,13 +1,9 @@
 #!/bin/bash
 set -a
 
-RUNNER=docker
-if ! type $RUNNER >/dev/null 2>&1
-then
-    # disabling podman... damn thing keeps not cleaning up after itself
-    # echo "Using docker, eww you should install podman"
-    RUNNER=docker
-fi
+# Respect RUNNER env var if set.
+# Defaulting to docker - podman keeps not cleaning up after itself.
+RUNNER=${RUNNER:-docker}
 
 CONTAINER_URL=${CONTAINER_URL:-docker.io/redhatinsights/insights-proxy}
 case "`uname -s`" in
