@@ -42,6 +42,7 @@ do
     conditional_add_param $var
 done
 
+set -x
 $RUNNER run $MYOPTS \
         --rm \
         -ti \
