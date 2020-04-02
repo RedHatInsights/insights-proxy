@@ -43,7 +43,7 @@ do
 done
 
 set -x
-$RUNNER run $MYOPTS \
+exec $RUNNER run $MYOPTS \
         --rm \
         -ti \
         --name insightsproxy \
