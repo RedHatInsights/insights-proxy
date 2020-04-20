@@ -1,7 +1,7 @@
 FROM fedora:29
 
 RUN dnf update -y && \
-        dnf install -y nodejs && \
+        dnf install -y dumb-init nodejs && \
         dnf clean all
 
 COPY ./package.json /package.json
@@ -12,4 +12,5 @@ COPY ./ssl /ssl
 
 COPY ./spandx.config.js /spandx.config.js
 
-CMD [ "/usr/bin/node", "/node_modules/spandx/app/cli.js" ]
+# dumb-init being PID1 allows SIGTERM etc. to reach the node process.
+CMD [ "/usr/bin/dumb-init", "/usr/bin/node", "/node_modules/spandx/app/cli.js" ]
