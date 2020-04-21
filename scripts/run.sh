@@ -42,9 +42,9 @@ do
     conditional_add_param $var
 done
 
-$RUNNER run $MYOPTS \
+set -x
+exec $RUNNER run $MYOPTS \
         --rm \
-        -ti \
         --name insightsproxy \
         --security-opt label=disable \
         -p ${SPANDX_PORT:-1337}:${SPANDX_PORT:-1337} \
