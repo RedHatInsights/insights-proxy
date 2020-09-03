@@ -10,7 +10,7 @@ fi
 # -v is not working well on bash 3.2 on osx
 if [[ -n "$SPANDX_CONFIG" ]]
 then
-    REALPATH=`python2 -c 'import os,sys;print os.path.realpath(sys.argv[1])' $SPANDX_CONFIG`
+    REALPATH=`python3 -c 'import os,sys;print(os.path.realpath(sys.argv[1]))' $SPANDX_CONFIG`
 
     if [[ ! -f $REALPATH ]]
     then
