@@ -65,7 +65,7 @@ const envMap = {
     },
     stage: {
         keycloakPubkey: keycloakPubkeys.stage,
-        target: 'https://stage.cloud.redhat.com',
+        target: 'https://cloud.stage.redhat.com',
         str: 'stage'
     },
     prod: {
