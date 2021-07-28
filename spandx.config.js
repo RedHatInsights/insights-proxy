@@ -9,6 +9,7 @@ const url = require('url-parse');
 const localhost = (process.env.PLATFORM === 'linux') ? 'localhost' : 'host.docker.internal';
 const protocol = (process.env.SSL === 'true') ? 'https' : 'http';
 const port = process.env.PORT || 8002;
+const useCloud = process.env.USE_CLOUD;
 
 const PORTAL_BACKEND_MARKER = 'PORTAL_BACKEND_MARKER';
 
@@ -55,22 +56,22 @@ const buildUser = input => {
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://ci.cloud.redhat.com',
+        target: `https://ci.${useCloud ? 'cloud' : 'console'}.redhat.com`,
         str: 'ci'
     },
     qa: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: 'https://qa.cloud.redhat.com',
+        target: `https://qa.${useCloud ? 'cloud' : 'console'}.redhat.com`,
         str: 'qa'
     },
     stage: {
         keycloakPubkey: keycloakPubkeys.stage,
-        target: 'https://cloud.stage.redhat.com',
+        target: `https://${useCloud ? 'cloud' : 'console'}.stage.redhat.com`,
         str: 'stage'
     },
     prod: {
         keycloakPubkey: keycloakPubkeys.prod,
-        target: 'https://cloud.redhat.com',
+        target: `https://${useCloud ? 'cloud' : 'console'}.redhat.com`,
         str: 'prod'
     }
 };
