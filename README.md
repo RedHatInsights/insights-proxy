@@ -32,6 +32,13 @@ $ bash scripts/run.sh
 $ SPANDX_CONFIG=/path/to/custom/config.js bash ~/path/to/insights-proxy/scripts/run.sh
 ```
 
+### Run the container with cloud proxy
+
+In order to run the container with cloud.redhat.com as main source of data you have to set `USE_CLOUD` env variable.
+```
+$ USE_CLOUD=true ~/path/to/insights-proxy/scripts/run.sh
+```
+
 ### Run with local Insights Chrome (for chrome developers only)
 This is for Chrome developers only.
 If you are developing an application on the platform you need not do this!
