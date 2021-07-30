@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM fedora:33
 
 RUN dnf update -y && \
         dnf install -y dumb-init nodejs && \
@@ -13,4 +13,4 @@ COPY ./ssl /ssl
 COPY ./spandx.config.js /spandx.config.js
 
 # dumb-init being PID1 allows SIGTERM etc. to reach the node process.
-CMD [ "/usr/bin/dumb-init", "/usr/bin/node", "/node_modules/spandx/app/cli.js" ]
+CMD [ "/usr/bin/dumb-init", "/usr/bin/node", "--max-http-header-size=65536", "/node_modules/spandx/app/cli.js" ]
