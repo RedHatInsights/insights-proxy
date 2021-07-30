@@ -79,7 +79,7 @@ const envMap = {
 const authPlugin = (req, res, target) => {
     let env = envMap.prod;
 
-    switch (req.headers['x-spandx-origin']) {
+    switch (req.headers['x-spandx-origin'].replace(/http[s]?:\/\//, '').replace(':1337', '')) {
         case 'ci.foo.redhat.com':    env = envMap.ci;    break;
         case 'qa.foo.redhat.com':    env = envMap.qa;    break;
         case 'stage.foo.redhat.com': env = envMap.stage; break;
@@ -87,8 +87,8 @@ const authPlugin = (req, res, target) => {
         default: env = false;
     }
 
-    if (target === PORTAL_BACKEND_MARKER) {
-        target = env.target;
+    if (target && target.includes(PORTAL_BACKEND_MARKER)) {
+      target = target.replace(PORTAL_BACKEND_MARKER, env.target);
         console.log(`    --> mangled ${PORTAL_BACKEND_MARKER} to ${target}`);
     }
 
@@ -120,7 +120,7 @@ const defaults = {
     },
     esi: {
         allowedHosts: [
-            /^https:\/\/.*cloud.redhat.com$/
+          /^https:\/\/.*(cloud|console).redhat.com$/
         ]
     },
     host: {
