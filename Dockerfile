@@ -1,4 +1,4 @@
-FROM fedora:29
+FROM quay.io/fedora/fedora:33-x86_64
 
 RUN dnf update -y && \
         dnf install -y dumb-init nodejs && \
