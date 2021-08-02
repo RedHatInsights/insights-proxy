@@ -56,12 +56,12 @@ const buildUser = input => {
 const envMap = {
     ci: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: `https://ci.${useCloud ? 'cloud' : 'console'}.redhat.com`,
+        target: `https://ci.cloud.redhat.com`,
         str: 'ci'
     },
     qa: {
         keycloakPubkey: keycloakPubkeys.qa,
-        target: `https://qa.${useCloud ? 'cloud' : 'console'}.redhat.com`,
+        target: `https://qa.cloud.redhat.com`,
         str: 'qa'
     },
     stage: {
