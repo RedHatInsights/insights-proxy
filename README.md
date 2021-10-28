@@ -1,3 +1,5 @@
+This project is deprecated. [Please use the webpack proxy](https://github.com/RedHatInsights/frontend-components/tree/master/packages/config#useproxy)
+
 # insights-proxy
 
 Proxy for the insightsfrontend container
